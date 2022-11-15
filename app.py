@@ -59,6 +59,7 @@ def recommend_scores():
     
     return result_df
 
+# Function for background image
 def add_bg_from_url():
     st.markdown(
         f"""
@@ -83,7 +84,7 @@ def add_bg_from_url():
 
 st.title("Which wine should I get?")
 st.write("By Lee Wan Xian ([GitHub](https://github.com/leewanxian/wine_recommender))")
-st.text("")
+st.write("")
 st.write("You can type the wine traits that you want in the dropdown list below")
 add_bg_from_url()
 
