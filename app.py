@@ -72,7 +72,7 @@ def add_bg_from_url():
         }}
         
         [data-testid="stVerticalBlock"] {{
-        background-color: rgba(255,255,255,0.75)
+        background-color: rgba(255,255,255,0.5)
         }}
         
         </style>
@@ -83,12 +83,12 @@ def add_bg_from_url():
 #----------------------------------------------------------------------------------------------------------
 
 st.title("Which wine should I get?")
-st.write("By Lee Wan Xian ([GitHub](https://github.com/leewanxian/wine_recommender))")
-st.write("")
+st.write("By Lee Wan Xian")
+st.write("[GitHub](https://github.com/leewanxian) | [LinkedIn](https://www.linkedin.com/in/wanxianlee)")
 st.write("You can type the wine traits that you want in the dropdown list below")
 add_bg_from_url()
 
-select_temptrait = st.multiselect('Choose the traits that you want in your wine', options = all_traits)
+select_temptrait = st.multiselect(label = " ", options = all_traits, label_visibility = "collapsed")
 
 if st.button('Show me the wines!'):
     with st.spinner('Should you have some wine now?'):
@@ -129,7 +129,7 @@ if st.button('Show me the wines!'):
         df_rec_raw = df_selectrec_detail.sort_values('est_match_pts', ascending=False).head(10)
         
         # Prepare the display for the top 10 recommendations
-        df_rec_final = df_rec_raw[['title', 'country', 'province', 'variety', 'winery', 'points', 'price', 'traits', 'description']].reset_index(drop=True)
+        df_rec_final = df_rec_raw[['title', 'points', 'price', 'variety', 'country', 'province', 'winery', 'description', 'traits']].reset_index(drop=True)
         df_rec_final.index = df_rec_final.index + 1
         df_rec_final['traits']=df_rec_final['traits'].str.replace(" ", " | ")
         df_rec_final.rename(columns={'title':'Name',
@@ -137,9 +137,9 @@ if st.button('Show me the wines!'):
                                      'province':'State/Province',
                                      'variety':'Type',
                                      'winery':'Winery',
-                                     'points':'Rating',
+                                     'points':'Rating (Out of 100)',
                                      'price':'Price',
                                      'description':'Review',
                                      'traits':'Key Traits'}, inplace=True)
         st.balloons()
-        st.dataframe(df_rec_final)
+        st.dataframe(df_rec_final.style.format({"Price": "${:,.2f}"}))
